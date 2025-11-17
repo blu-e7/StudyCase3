@@ -3,8 +3,7 @@ package Pethouse;
 import java.util.Scanner;
 
 public class SistemAkun {
-    // Sesuai logika kode asli, hanya menyimpan satu member
-    private Member member;
+    private Pelanggan member;
     private boolean punyaAkun = false;
     private Scanner sc;
 
@@ -27,9 +26,8 @@ public class SistemAkun {
         System.out.print("Masukkan No. HP    : ");
         String telepon = sc.nextLine();
 
-        this.member = new Member(nama, nim, telepon, password);
+        this.member = new Pelanggan(nama, nim, telepon, password);
         this.punyaAkun = true;
-
         System.out.println("\n>>> Registrasi Member Berhasil!");
         System.out.println(member.getDetail());
     }
@@ -41,14 +39,14 @@ public class SistemAkun {
         System.out.print("Masukkan Password : ");
         String loginPass = sc.nextLine();
 
-        if (punyaAkun && (loginNama.equals(member.getNama()) || loginNama.equals(member.nim)) && member.checkPassword(loginPass)) {
+        if (punyaAkun && (loginNama.equals(member.getNama()) || loginNama.equals(member.getNim())) && member.checkPassword(loginPass)) {
             System.out.println("\n>>> Login Berhasil! Selamat datang, " + member.getNama());
             System.out.println(member.getDetail());
             System.out.println("Anda mendapatkan diskon 10% untuk setiap transaksi!");
-            return member; // Kembalikan objek Member
+            return member;
         } else {
             System.out.println("\nLogin gagal! Nama/NIM atau Password salah.");
-            return null; // Login gagal
+            return null;
         }
     }
 
@@ -64,6 +62,6 @@ public class SistemAkun {
         Pelanggan nonMember = new Pelanggan(nama, nim, telp);
         System.out.println("\n>>> Data Non Member Berhasil Disimpan!");
         System.out.println(nonMember.getDetail());
-        return nonMember; // Kembalikan objek Pelanggan
+        return nonMember;
     }
 }

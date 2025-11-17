@@ -14,13 +14,13 @@ public class Transaksi {
         return total;
     }
 
-    // Menggunakan polymorphism. Bisa menerima Jasa atau Barang.
-    public void tambahItem(Produk produk, int jumlah, String tipe) {
+    public void tambahItem(Produk produk, int jumlah) {
         int subtotal = produk.getHarga() * jumlah;
         this.total += subtotal;
         String itemStruk = produk.getNama() + " x" + jumlah + " = Rp " + subtotal + "\n";
 
-        if (tipe.equals("Jasa")) {
+        // Kita cek tipe produk langsung dari objeknya
+        if (produk.getTipeProduk().equals("Jasa")) {
             strukJasa += itemStruk;
         } else {
             strukBarang += itemStruk;
@@ -39,7 +39,12 @@ public class Transaksi {
 
         System.out.println(struk);
 
-        double diskon = pelanggan.getDiskon();
+        double diskon = 0.0;
+        // Logika diskon diganti menggunakan 'if' sederhana
+        if (pelanggan.isMember()) {
+            diskon = 0.1; // Diskon 10%
+        }
+
         int totalAkhir = (int) (total * (1.0 - diskon));
 
         System.out.printf("Total: Rp%d\nDiskon: %.0f%c \nTotal Akhir: Rp%d",

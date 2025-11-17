@@ -24,9 +24,7 @@ public class PetShopApp {
     public void run() {
         menuLogin();
 
-        // Jika pelangganSaatIni tidak null (artinya user tidak memilih 'Q' untuk keluar)
         if (pelangganSaatIni != null) {
-            // Buat objek transaksi baru untuk pelanggan ini
             this.transaksi = new Transaksi(pelangganSaatIni);
             System.out.println("\n===== Selamat Datang di PetShop =====");
             menuUtama();
@@ -47,11 +45,11 @@ public class PetShopApp {
             case '1' -> {
                 if (!sistemAkun.isPunyaAkun()) {
                     sistemAkun.registrasi();
-                    menuLogin(); // Kembali ke menu login setelah registrasi
+                    menuLogin();
                 } else {
                     pelangganSaatIni = sistemAkun.login();
                     if (pelangganSaatIni == null) {
-                        menuLogin(); // Jika login gagal, ulangi menu login
+                        menuLogin();
                     }
                 }
             }
@@ -60,7 +58,7 @@ public class PetShopApp {
             }
             case 'Q', 'q' -> {
                 System.out.println("\nTerima kasih telah berkunjung ke PetShop!");
-                pelangganSaatIni = null; // Menandakan program harus berhenti
+                pelangganSaatIni = null;
             }
             default -> {
                 System.out.println("\nPilihan tidak valid, silakan coba lagi.");
@@ -98,9 +96,9 @@ public class PetShopApp {
         System.out.println("======================");
         System.out.println("Q. Kembali");
 
-        List<Jasa> daftarJasa = manajemenProduk.getDaftarJasa();
+        List<Produk> daftarJasa = manajemenProduk.getDaftarJasa();
         for (int i = 0; i < daftarJasa.size(); i++) {
-            Jasa jasa = daftarJasa.get(i);
+            Produk jasa = daftarJasa.get(i);
             System.out.printf("%d. %-25s (Rp %d)\n", i + 1, jasa.getNama(), jasa.getHarga());
         }
 
@@ -111,10 +109,12 @@ public class PetShopApp {
         if (pilihan == 'q' || pilihan == 'Q') {
             menuUtama();
         } else if (pilihanindex >= 0 && pilihanindex < daftarJasa.size()) {
-            Jasa jasaDipilih = daftarJasa.get(pilihanindex);
+            Produk jasaDipilih = daftarJasa.get(pilihanindex);
             System.out.print("Masukkan jumlah hewan untuk " + jasaDipilih.getNama() + ": ");
             int jumlah = sc.nextInt();
-            transaksi.tambahItem(jasaDipilih, jumlah, "Jasa");
+
+            transaksi.tambahItem(jasaDipilih, jumlah); // Panggilan disederhanakan
+
             menuJasa();
         } else {
             System.out.println("PILIHAN INVALID.");
@@ -157,14 +157,16 @@ public class PetShopApp {
         if (pilihan2 == 'Q' || pilihan2 == 'q') {
             menuBarang();
         } else if (pilihan2index >= 0 && pilihan2index < kategori.getItems().size()) {
-            Barang barangDipilih = kategori.getItems().get(pilihan2index);
+            Produk barangDipilih = kategori.getItems().get(pilihan2index);
             System.out.print("Masukkan jumlah " + barangDipilih.getNama() + " yang ingin dibeli: ");
             int jumlah = sc.nextInt();
-            transaksi.tambahItem(barangDipilih, jumlah, "Barang");
-            menuBarang(); // Kembali ke menu kategori barang
+
+            transaksi.tambahItem(barangDipilih, jumlah); // Panggilan disederhanakan
+
+            menuBarang();
         } else {
             System.out.println("PILIHAN INVALID.");
-            menuDetailBarang(kategori); // Ulangi menu detail
+            menuDetailBarang(kategori);
         }
     }
 }
